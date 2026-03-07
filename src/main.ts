@@ -30,7 +30,7 @@ async function createZoneMode(): Promise<void> {
             const items = await OBR.scene.items.getItems((item) => item.id.includes(currentId));
             const size = await getCellSize(gridType);
 
-            const customVerts = extractCurveVertices(items, size, gridType);
+            const customVerts = extractCurveVertices(items, size);
 
             const outerEdge = buildCurve()
                 .points(customVerts)
