@@ -1,4 +1,4 @@
-import type { GridType, Item, Vector2 } from "@owlbear-rodeo/sdk";
+import type { Item, Vector2 } from "@owlbear-rodeo/sdk";
 
 type HexSide = 0 | 1 | 2 | 3 | 4 | 5;
 
@@ -69,7 +69,7 @@ const getJumpSide = (side: HexSide): HexSide => ((((side + 3) % 6) + 1) % 6) as 
 
 const getNextSide = (side: HexSide): HexSide => ((side + 1) % 6) as HexSide;
 
-export function extractCurveVertices(hexagons: Item[], cellSize: Vector2, gridType: GridType): Vector2[] {
+export function extractCurveVertices(hexagons: Item[], cellSize: Vector2): Vector2[] {
     // Assume pointy for now
     const vertices: Vector2[] = [];
 
