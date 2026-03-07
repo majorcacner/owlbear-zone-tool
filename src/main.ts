@@ -1,7 +1,6 @@
 import OBR, { buildCurve } from "@owlbear-rodeo/sdk";
 import { getCellSize, makeCell } from "./cellBuilder";
-import { buildPerimeter } from "./perimeterBuilder";
-import { buildVertexSet } from "./vertexBuilder";
+import { extractCurveVertices } from "./verticesBuilder";
 
 const toolId = "rodeo.owlbear.tool/drawing";
 const modeId = "zone";
@@ -31,11 +30,10 @@ async function createZoneMode(): Promise<void> {
             const items = await OBR.scene.items.getItems((item) => item.id.includes(currentId));
             const size = await getCellSize(gridType);
 
-            const verts = buildVertexSet(items, size, gridType);
-            const orderedVerts = buildPerimeter(verts);
+            const customVerts = extractCurveVertices(items, size, gridType);
 
             const outerEdge = buildCurve()
-                .points(orderedVerts)
+                .points(customVerts)
                 .tension(0)
                 .closed(true)
                 .fillColor((ctx.metadata.fillColor as string) || "red")
