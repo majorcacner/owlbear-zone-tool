@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-labelledby="title">
+  <title id="title">Area selection tool</title>
+  <!-- dashed selection rectangle -->
+  <rect x="3.5" y="3.5" width="17" height="17" fill="none" stroke="#111" stroke-width="1.5" stroke-dasharray="3 3" rx="2"/>
+  <!-- corner handles -->
+  <rect x="2.5" y="2.5" width="3" height="3" fill="#111" rx="0.5"/>
+  <rect x="18.5" y="2.5" width="3" height="3" fill="#111" rx="0.5"/>
+  <rect x="2.5" y="18.5" width="3" height="3" fill="#111" rx="0.5"/>
+  <rect x="18.5" y="18.5" width="3" height="3" fill="#111" rx="0.5"/>
+  <!-- crosshair inside to indicate selection -->
+  <line x1="12" y1="7.5" x2="12" y2="16.5" stroke="#111" stroke-width="1" stroke-linecap="round"/>
+  <line x1="7.5" y1="12" x2="16.5" y2="12" stroke="#111" stroke-width="1" stroke-linecap="round"/>
+</svg>
