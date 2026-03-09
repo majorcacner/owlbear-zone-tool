@@ -1,6 +1,8 @@
-import OBR, { buildCurve } from "@owlbear-rodeo/sdk";
+import OBR, { buildCurve, type Vector2 } from "@owlbear-rodeo/sdk";
 import { getCellSize, makeCell } from "./cellBuilder";
-import { extractCurveVertices } from "./verticesBuilder";
+import { flatHex } from "./flatHex";
+import { pointyHex } from "./pointyHex";
+import { square } from "./square";
 
 const toolId = "rodeo.owlbear.tool/drawing";
 const modeId = "zone";
@@ -30,7 +32,12 @@ async function createZoneMode(): Promise<void> {
             const items = await OBR.scene.local.getItems((item) => item.id.includes(currentId));
             const size = await getCellSize(gridType);
 
-            const customVerts = extractCurveVertices(items, size);
+            let customVerts: Vector2[] = [];
+
+            // Only supported types
+            if (gridType === "HEX_VERTICAL") customVerts = pointyHex.extractCurveVertices(items, size);
+            else if (gridType === "HEX_HORIZONTAL") customVerts = flatHex.extractCurveVertices(items, size);
+            else if (gridType === "SQUARE") customVerts = square.extractCurveVertices(items, size);
 
             const outerEdge = buildCurve()
                 .points(customVerts)

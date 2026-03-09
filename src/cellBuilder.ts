@@ -48,14 +48,21 @@ export async function getCellSize(gridType: GridType): Promise<Vector2> {
 }
 
 export async function makeCell(currentId: string, ctx: ToolContext, ev: ToolEvent): Promise<void> {
-    const position = await OBR.scene.grid.snapPosition(ev.pointerPosition, 1, false);
-    const id = getId(currentId, position);
+    const gridType = await OBR.scene.grid.getType();
+    const snappedPosition = await OBR.scene.grid.snapPosition(ev.pointerPosition, 1, false);
+    const id = getId(currentId, snappedPosition);
     const items = await OBR.scene.local.getItems((x) => x.id === id);
 
     if (items.length) return;
 
-    const gridType = await OBR.scene.grid.getType();
     const size = await getCellSize(gridType);
+
+    const position: Vector2 =
+        gridType === "SQUARE" // Squares are positioned from the top left corner, while hex are positioned from their center.
+            ? // Can't rely on the grid snapping API since it will sometime snap to the corner of an adjacent cell
+              // if the mouse if closer to it. Snap manually to top left instead.
+              { x: snappedPosition.x - size.x / 2, y: snappedPosition.y - size.y / 2 }
+            : snappedPosition;
 
     const shape = buildShape()
         .id(id)
