@@ -2,11 +2,12 @@
     "name": "Zone Drawing Tool",
     "version": "1.1.0",
     "manifest_version": 1,
+    "description": "An additional mode for the drawing tool to easily put down areas mapped to the grid.",
     "action": {
-        "title": "A zone drawing utility tool",
+        "title": "Zone",
         "icon": "/zone.svg",
         "popover": "/",
-        "height": 600,
-        "width": 400
+        "height": 0,
+        "width": 0
     }
 }

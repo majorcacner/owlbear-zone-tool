@@ -27,7 +27,7 @@ async function createZoneMode(): Promise<void> {
         },
         onToolUp: async (ctx) => {
             const gridType = await OBR.scene.grid.getType();
-            const items = await OBR.scene.items.getItems((item) => item.id.includes(currentId));
+            const items = await OBR.scene.local.getItems((item) => item.id.includes(currentId));
             const size = await getCellSize(gridType);
 
             const customVerts = extractCurveVertices(items, size);
@@ -45,7 +45,7 @@ async function createZoneMode(): Promise<void> {
             await OBR.scene.items.addItems([outerEdge]);
 
             // Cleanup old objects
-            OBR.scene.items.deleteItems(items.map((x) => x.id));
+            OBR.scene.local.deleteItems(items.map((x) => x.id));
 
             currentId = crypto.randomUUID();
         },

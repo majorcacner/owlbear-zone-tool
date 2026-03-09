@@ -49,10 +49,10 @@ export async function getCellSize(gridType: GridType): Promise<Vector2> {
 
 export async function makeCell(currentId: string, ctx: ToolContext, ev: ToolEvent): Promise<void> {
     const position = await OBR.scene.grid.snapPosition(ev.pointerPosition, 1, false);
-    const items = await OBR.scene.items.getItems();
     const id = getId(currentId, position);
+    const items = await OBR.scene.local.getItems((x) => x.id === id);
 
-    if (items.find((x) => x.id === id)) return;
+    if (items.length) return;
 
     const gridType = await OBR.scene.grid.getType();
     const size = await getCellSize(gridType);
@@ -70,5 +70,5 @@ export async function makeCell(currentId: string, ctx: ToolContext, ev: ToolEven
 
     const built = shape.build();
 
-    await OBR.scene.items.addItems([built]);
+    await OBR.scene.local.addItems([built]);
 }
