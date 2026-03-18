@@ -64,6 +64,13 @@ export async function makeCell(currentId: string, ctx: ToolContext, ev: ToolEven
               { x: snappedPosition.x - size.x / 2, y: snappedPosition.y - size.y / 2 }
             : snappedPosition;
 
+    const strokeColor = ctx.metadata.strokeColor as string;
+    const strokeOpacity = ctx.metadata.strokeOpacity as number;
+    const strokeWidth = ctx.metadata.strokeWidth as number;
+
+    const fillColor = ctx.metadata.fillColor as string;
+    const fillOpacity = ctx.metadata.fillOpacity as number;
+
     const shape = buildShape()
         .id(id)
         .position(position)
@@ -71,9 +78,15 @@ export async function makeCell(currentId: string, ctx: ToolContext, ev: ToolEven
         .rotation(getRotation(gridType))
         .width(size.x)
         .height(size.y)
-        .fillColor((ctx.metadata.fillColor as string) || "red")
-        .fillOpacity((ctx.metadata.fillOpacity as number) || 0)
-        .strokeWidth(0);
+        .fillOpacity(fillOpacity)
+        .fillColor(fillColor);
+
+    // If we have no fill then use the stroke to show the shape
+    if (fillOpacity === 0) {
+        shape.strokeColor(strokeColor).strokeOpacity(strokeOpacity).strokeWidth(strokeWidth);
+    } else {
+        shape.strokeWidth(0);
+    }
 
     const built = shape.build();
 
