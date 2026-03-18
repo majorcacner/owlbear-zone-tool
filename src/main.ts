@@ -47,6 +47,7 @@ async function createZoneMode(): Promise<void> {
                 .fillOpacity((ctx.metadata.fillOpacity as number) || 0)
                 .strokeColor((ctx.metadata.strokeColor as string) || "red")
                 .strokeWidth((ctx.metadata.strokeWidth as number) || 0)
+                .locked(true)
                 .build();
 
             await OBR.scene.items.addItems([outerEdge]);
