@@ -1,13 +1,61 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>owlbear-zone-tool</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>owlbear-zone-tool</title>
+        <style>
+            * {
+                color: #e0e0e0;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 16px;
+            }
+
+            #app {
+                padding: 0 8px;
+            }
+
+            h3 {
+                padding: 0;
+                margin: 0;
+            }
+
+            hr {
+                border-color: rgba(255, 255, 255, 0.2);
+            }
+
+            label {
+                display: flex;
+
+                span {
+                    display: flex;
+                    flex-direction: column;
+
+                    small {
+                        font-size: 10px;
+                        opacity: 0.8;
+                    }
+                }
+
+                input[type="checkbox"] {
+                    width: 1.2em;
+                    cursor: pointer;
+                    accent-color: rgb(230, 216, 24);
+                    margin: 0 8px 0 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <h3>Zone - Config</h3>
+            <hr />
+            <label>
+                <input id="zone-live-compute" type="checkbox" />
+                <span> Live compute edges? <small> (Less performance, better visuals) </small></span>
+            </label>
+        </div>
+        <script type="module" src="/src/main.ts"></script>
+    </body>
 </html>

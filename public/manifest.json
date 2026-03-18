@@ -1,13 +1,13 @@
 {
     "name": "Zone Drawing Tool",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "manifest_version": 1,
     "description": "Drawing tool mode for areas.",
     "action": {
         "title": "Zone",
         "icon": "/zone.svg",
         "popover": "/",
-        "height": 0,
-        "width": 0
+        "height": 95,
+        "width": 256
     }
 }

@@ -1,4 +1,11 @@
-import OBR, { buildShape, type GridType, type ShapeType, type ToolEvent, type Vector2 } from "@owlbear-rodeo/sdk";
+import OBR, {
+    buildShape,
+    type GridType,
+    type ShapeType,
+    type ToolContext,
+    type ToolEvent,
+    type Vector2,
+} from "@owlbear-rodeo/sdk";
 
 function getShapeType(gridType: GridType): ShapeType {
     switch (gridType) {
@@ -40,7 +47,12 @@ export async function getCellSize(gridType: GridType): Promise<Vector2> {
     return { x: gridSize, y: gridSize };
 }
 
-export async function makeCell(currentId: string, ev: ToolEvent): Promise<void> {
+export async function makeCell(
+    currentId: string,
+    ctx: ToolContext,
+    ev: ToolEvent,
+    liveCompute: boolean,
+): Promise<void> {
     const gridType = await OBR.scene.grid.getType();
     const snappedPosition = await OBR.scene.grid.snapPosition(ev.pointerPosition, 1, false);
     const id = getId(currentId, snappedPosition);
@@ -57,16 +69,37 @@ export async function makeCell(currentId: string, ev: ToolEvent): Promise<void> 
               { x: snappedPosition.x - size.x / 2, y: snappedPosition.y - size.y / 2 }
             : snappedPosition;
 
-    const shape = buildShape()
+    let shape = buildShape()
         .id(id)
         .position(position)
         .shapeType(getShapeType(gridType))
         .rotation(getRotation(gridType))
         .width(size.x)
-        .height(size.y)
-        .strokeWidth(0)
-        .fillOpacity(0)
-        .build();
+        .height(size.y);
 
-    await OBR.scene.local.addItems([shape]);
+    // Make the shape invisible if we're computing the edge live
+    if (liveCompute) {
+        shape = shape.fillOpacity(0).strokeWidth(0);
+    } else {
+        // Else make the cells visible. This offer better performance
+        const fillOpacity = ctx.metadata.fillOpacity as number;
+
+        shape = shape.fillOpacity(fillOpacity);
+
+        // If we have a background color, omit the stroke for visual clarity
+        if (fillOpacity > 0) {
+            const fillColor = ctx.metadata.fillColor as string;
+            shape = shape.fillColor(fillColor).strokeWidth(0);
+        } else {
+            // If we don't, then draw the stroke
+            const strokeWidth = ctx.metadata.strokeWidth as number;
+            const strokeColor = ctx.metadata.strokeColor as string;
+            const strokeOpacity = ctx.metadata.strokeOpacity as number;
+            shape = shape.strokeWidth(strokeWidth).strokeColor(strokeColor).strokeOpacity(strokeOpacity);
+        }
+    }
+
+    const built = shape.build();
+
+    await OBR.scene.local.addItems([built]);
 }
